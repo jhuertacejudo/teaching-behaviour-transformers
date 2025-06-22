@@ -59,8 +59,8 @@ for grupo, etiquetas in zip(["TOTAL", "TRAIN", "TEST"], [y, train_labels, test_l
         print(f'Consensuada {grupo} {unique[i]}: Samples {counts[i]}')
 
 # Tokenización y creación de datasets
-train_encodings = tokenizer(train_texts.tolist(), truncation=True, padding=True, max_length=89)
-test_encodings = tokenizer(test_texts.tolist(), truncation=True, padding=True, max_length=89)
+train_encodings = tokenizer(train_texts.tolist(), truncation=True, padding=True, max_length=436)
+test_encodings = tokenizer(test_texts.tolist(), truncation=True, padding=True, max_length=436)
 
 train_labels = torch.tensor(train_labels.tolist()).to(device)
 test_labels = torch.tensor(test_labels.tolist()).to(device)
@@ -80,16 +80,16 @@ test_dataset = TensorDataset(
 # DataLoaders con generador para reproducibilidad
 g = torch.Generator()
 g.manual_seed(42)
-train_dataloader = DataLoader(train_dataset, batch_size=4, shuffle=True, generator=g)
-test_dataloader = DataLoader(test_dataset, batch_size=4, shuffle=True)
+train_dataloader = DataLoader(train_dataset, batch_size=8, shuffle=True, generator=g)
+test_dataloader = DataLoader(test_dataset, batch_size=8, shuffle=True)
 
 # Optimización
-optimizer = AdamW(model.parameters(), lr=1.4958e-06, weight_decay=0.1885)
+optimizer = AdamW(model.parameters(), lr=1.3011988782370898e-05, weight_decay=0.179740016559935165)
 criterion = torch.nn.CrossEntropyLoss()
 
 # Entrenamiento
 model.train()
-for epoch in range(46):
+for epoch in range(50):
     total_loss = 0
     correct_predictions = 0
     total_predictions = 0
