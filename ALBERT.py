@@ -33,12 +33,6 @@ print(f'Usando el dispositivo: {device}')
 model = AlbertForSequenceClassification.from_pretrained("albert-base-v2", num_labels=5)
 tokenizer = AlbertTokenizer.from_pretrained("albert-base-v2", do_lower_case=True)
 
-for param in model.albert.parameters():
-    param.requires_grad = False
-
-for param in model.classifier.parameters():
-    param.requires_grad = True
-
 model.to(device)
 
 # Cargar datos
@@ -61,8 +55,8 @@ for grupo, etiquetas in zip(["TOTAL", "TRAIN", "TEST"], [y, train_labels, test_l
         print(f'Consensuada {grupo} {unique[i]}: Samples {counts[i]}')
 
 # Tokenización
-train_encodings = tokenizer(train_texts.tolist(), truncation=True, padding=True, max_length=142)
-test_encodings = tokenizer(test_texts.tolist(), truncation=True, padding=True, max_length=142)
+train_encodings = tokenizer(train_texts.tolist(), truncation=True, padding=True, max_length=70)
+test_encodings = tokenizer(test_texts.tolist(), truncation=True, padding=True, max_length=70)
 
 train_labels = torch.tensor(train_labels.tolist()).to(device)
 test_labels = torch.tensor(test_labels.tolist()).to(device)
@@ -82,16 +76,16 @@ test_dataset = TensorDataset(
 # DataLoaders
 g = torch.Generator()
 g.manual_seed(42)
-train_dataloader = DataLoader(train_dataset, batch_size=8, shuffle=True, generator=g)
-test_dataloader = DataLoader(test_dataset, batch_size=8, shuffle=True)
+train_dataloader = DataLoader(train_dataset, batch_size=16, shuffle=True, generator=g)
+test_dataloader = DataLoader(test_dataset, batch_size=16, shuffle=True)
 
 # Optimización
-optimizer = AdamW(model.parameters(), lr= 2.0589238436920533e-05, weight_decay=0.17743496491719526)
+optimizer = AdamW(model.parameters(), lr=1.0000123123878512e-5, weight_decay=0.0095221583265841)
 criterion = torch.nn.CrossEntropyLoss()
 
 # Entrenamiento
 model.train()
-for epoch in range(45):
+for epoch in range(5):
     total_loss = 0
     correct_predictions = 0
     total_predictions = 0
